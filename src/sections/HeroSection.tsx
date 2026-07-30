@@ -1,4 +1,5 @@
 
+import { Github } from 'lucide-react';
 import { ContactButton } from '../components/ContactButton';
 import { FadeIn } from '../components/FadeIn';
 import { Magnet } from '../components/Magnet';
@@ -8,7 +9,7 @@ export const HeroSection = () => {
     <section className="h-screen flex flex-col overflow-x-clip relative w-full">
       {/* Navbar */}
       <FadeIn delay={0} y={-20} className="w-full z-20">
-        <nav className="flex justify-between px-6 md:px-10 pt-6 md:pt-8 w-full max-w-7xl mx-auto">
+        <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 w-full max-w-7xl mx-auto">
           {['About', 'Price', 'Projects', 'Contact'].map((item) => (
             <a
               key={item}
@@ -18,6 +19,15 @@ export const HeroSection = () => {
               {item}
             </a>
           ))}
+          <a
+            href="https://github.com/Sayanthrock"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#D7E2EA] hover:opacity-70 transition-opacity duration-200 ml-4 md:ml-8"
+            aria-label="GitHub Profile"
+          >
+            <Github className="w-6 h-6 md:w-8 md:h-8" />
+          </a>
         </nav>
       </FadeIn>
 

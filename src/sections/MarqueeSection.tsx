@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const gifs = [
   "https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif",
@@ -27,69 +27,75 @@ const gifs = [
 const row1 = [...gifs.slice(0, 11), ...gifs.slice(0, 11), ...gifs.slice(0, 11)];
 const row2 = [...gifs.slice(11), ...gifs.slice(11), ...gifs.slice(11)];
 
-export const MarqueeSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+export function MarqueeSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+    let animationFrameId: number;
+    let lastScrollY = window.scrollY;
+
+    const updateScroll = () => {
+      if (!sectionRef.current || !row1Ref.current || !row2Ref.current) return;
+
       const sectionTop = sectionRef.current.offsetTop;
-      const newOffset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
-      setOffset(newOffset);
+      const scrollY = window.scrollY;
+
+      // Calculate scroll offset based on instructions: (window.scrollY - sectionTop + window.innerHeight) * 0.3
+      const offset = (scrollY - sectionTop + window.innerHeight) * 0.3;
+
+      row1Ref.current.style.transform = `translate3d(${offset - 200}px, 0, 0)`;
+      row2Ref.current.style.transform = `translate3d(${-(offset - 200)}px, 0, 0)`;
+
+      lastScrollY = scrollY;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial call to set correct position on load
-    handleScroll();
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - lastScrollY) > 0) {
+        animationFrameId = requestAnimationFrame(updateScroll);
+      }
+    };
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Initial setup
+    updateScroll();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden w-full"
-    >
+    <section ref={sectionRef} className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden">
       <div className="flex flex-col gap-3">
-        {/* Row 1 - Moves Right */}
-        <div
-          className="flex gap-3 w-max"
-          style={{
-            transform: `translate3d(${offset - 200}px, 0, 0)`,
-            willChange: 'transform'
-          }}
-        >
-          {row1.map((src, idx) => (
+        {/* Row 1 */}
+        <div ref={row1Ref} className="flex gap-3 will-change-transform min-w-max ml-[-100%]">
+          {row1.map((url, i) => (
             <img
-              key={`r1-${idx}`}
-              src={src}
-              alt="Project GIF"
+              key={`row1-${i}`}
+              src={url}
+              alt="Marquee item"
               loading="lazy"
-              className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
+              className="w-[420px] h-[270px] rounded-2xl object-cover flex-shrink-0"
             />
           ))}
         </div>
 
-        {/* Row 2 - Moves Left */}
-        <div
-          className="flex gap-3 w-max"
-          style={{
-            transform: `translate3d(${-(offset - 200)}px, 0, 0)`,
-            willChange: 'transform'
-          }}
-        >
-          {row2.map((src, idx) => (
+        {/* Row 2 */}
+        <div ref={row2Ref} className="flex gap-3 will-change-transform min-w-max">
+          {row2.map((url, i) => (
             <img
-              key={`r2-${idx}`}
-              src={src}
-              alt="Project GIF"
+              key={`row2-${i}`}
+              src={url}
+              alt="Marquee item"
               loading="lazy"
-              className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
+              className="w-[420px] h-[270px] rounded-2xl object-cover flex-shrink-0"
             />
           ))}
         </div>
       </div>
     </section>
   );
-};
+}

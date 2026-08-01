@@ -1,5 +1,4 @@
 
-import { Github } from 'lucide-react';
 import { ContactButton } from '../components/ContactButton';
 import { FadeIn } from '../components/FadeIn';
 import { Magnet } from '../components/Magnet';
@@ -19,15 +18,6 @@ export const HeroSection = () => {
               {item}
             </a>
           ))}
-          <a
-            href="https://github.com/Sayanthrock"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#D7E2EA] hover:opacity-70 transition-opacity duration-200 ml-4 md:ml-8"
-            aria-label="GitHub Profile"
-          >
-            <Github className="w-6 h-6 md:w-8 md:h-8" />
-          </a>
         </nav>
       </FadeIn>
 

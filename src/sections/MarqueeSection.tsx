@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 const gifs = [
   "https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif",
@@ -29,19 +29,37 @@ const row2 = [...gifs.slice(11), ...gifs.slice(11), ...gifs.slice(11)];
 
 export const MarqueeSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+    let ticking = false;
+
+    const updatePosition = () => {
+      if (!sectionRef.current || !row1Ref.current || !row2Ref.current) {
+        ticking = false;
+        return;
+      }
+
       const sectionTop = sectionRef.current.offsetTop;
-      const newOffset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
-      setOffset(newOffset);
+      const offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+
+      row1Ref.current.style.transform = `translate3d(${offset - 200}px, 0, 0)`;
+      row2Ref.current.style.transform = `translate3d(${-(offset - 200)}px, 0, 0)`;
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updatePosition);
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Initial call to set correct position on load
-    handleScroll();
+    updatePosition();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -54,11 +72,9 @@ export const MarqueeSection = () => {
       <div className="flex flex-col gap-3">
         {/* Row 1 - Moves Right */}
         <div
+          ref={row1Ref}
           className="flex gap-3 w-max"
-          style={{
-            transform: `translate3d(${offset - 200}px, 0, 0)`,
-            willChange: 'transform'
-          }}
+          style={{ willChange: 'transform' }}
         >
           {row1.map((src, idx) => (
             <img
@@ -73,11 +89,9 @@ export const MarqueeSection = () => {
 
         {/* Row 2 - Moves Left */}
         <div
+          ref={row2Ref}
           className="flex gap-3 w-max"
-          style={{
-            transform: `translate3d(${-(offset - 200)}px, 0, 0)`,
-            willChange: 'transform'
-          }}
+          style={{ willChange: 'transform' }}
         >
           {row2.map((src, idx) => (
             <img

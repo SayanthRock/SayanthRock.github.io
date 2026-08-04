@@ -23,16 +23,28 @@ export const Magnet: React.FC<MagnetProps> = ({
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    let width = 0;
+    let height = 0;
+    let centerX = 0;
+    let centerY = 0;
+
+    const updateBounds = () => {
+      if (!magnetRef.current) return;
+      const rect = magnetRef.current.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      centerX = rect.left + window.scrollX + width / 2;
+      centerY = rect.top + window.scrollY + height / 2;
+    };
+
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!magnetRef.current) return;
 
-      const { clientX, clientY } = e;
-      const { left, top, width, height } = magnetRef.current.getBoundingClientRect();
-      const centerX = left + width / 2;
-      const centerY = top + height / 2;
-
-      const distanceX = clientX - centerX;
-      const distanceY = clientY - centerY;
+      const distanceX = e.pageX - centerX;
+      const distanceY = e.pageY - centerY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
       // Check if mouse is within padding area
@@ -57,6 +69,7 @@ export const Magnet: React.FC<MagnetProps> = ({
     document.documentElement.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
+      window.removeEventListener('resize', updateBounds);
       window.removeEventListener('mousemove', handleMouseMove);
       document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
     };

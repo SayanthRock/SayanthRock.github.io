@@ -1,4 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const gifs = [
   "https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif",
@@ -29,22 +30,22 @@ const row2 = [...gifs.slice(11), ...gifs.slice(11), ...gifs.slice(11)];
 
 export const MarqueeSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const sectionTop = sectionRef.current.offsetTop;
-      const newOffset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
-      setOffset(newOffset);
-    };
+  const { scrollY } = useScroll();
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial call to set correct position on load
-    handleScroll();
+  const x1 = useTransform(scrollY, (y) => {
+    if (!sectionRef.current || typeof window === 'undefined') return -200;
+    const sectionTop = sectionRef.current.offsetTop;
+    const offset = (y - sectionTop + window.innerHeight) * 0.3;
+    return offset - 200;
+  });
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const x2 = useTransform(scrollY, (y) => {
+    if (!sectionRef.current || typeof window === 'undefined') return 200;
+    const sectionTop = sectionRef.current.offsetTop;
+    const offset = (y - sectionTop + window.innerHeight) * 0.3;
+    return -(offset - 200);
+  });
 
   return (
     <section
@@ -53,10 +54,10 @@ export const MarqueeSection = () => {
     >
       <div className="flex flex-col gap-3">
         {/* Row 1 - Moves Right */}
-        <div
+        <motion.div
           className="flex gap-3 w-max"
           style={{
-            transform: `translate3d(${offset - 200}px, 0, 0)`,
+            x: x1,
             willChange: 'transform'
           }}
         >
@@ -69,13 +70,13 @@ export const MarqueeSection = () => {
               className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
             />
           ))}
-        </div>
+        </motion.div>
 
         {/* Row 2 - Moves Left */}
-        <div
+        <motion.div
           className="flex gap-3 w-max"
           style={{
-            transform: `translate3d(${-(offset - 200)}px, 0, 0)`,
+            x: x2,
             willChange: 'transform'
           }}
         >
@@ -88,7 +89,7 @@ export const MarqueeSection = () => {
               className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

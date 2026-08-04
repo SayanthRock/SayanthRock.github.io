@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import { cn } from '../utils/cn';
 
 interface AnimatedTextProps {
@@ -7,7 +7,7 @@ interface AnimatedTextProps {
   className?: string;
 }
 
-const Character = ({ char, progress, start, end }: { char: string, progress: any, start: number, end: number }) => {
+const Character = ({ char, progress, start, end }: { char: string, progress: MotionValue<number>, start: number, end: number }) => {
   const opacity = useTransform(progress, [start, end], [0.2, 1]);
   return (
     <span className="relative inline-block">

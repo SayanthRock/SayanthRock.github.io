@@ -36,7 +36,9 @@ const projects = [
   }
 ];
 
-const ProjectCard = ({ project, index, totalCards }: { project: any, index: number, totalCards: number }) => {
+type Project = typeof projects[number];
+
+const ProjectCard = ({ project, index, totalCards }: { project: Project, index: number, totalCards: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Calculate when this card should start scaling down

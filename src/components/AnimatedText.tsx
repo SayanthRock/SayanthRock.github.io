@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { cn } from '../utils/cn';
 
@@ -30,15 +30,18 @@ export const AnimatedText: React.FC<AnimatedTextProps> = ({ text, className }) =
     offset: ['start 0.8', 'end 0.2']
   });
 
-  const words = text.split(" ");
+  const wordsData = useMemo(() => {
+    const splitWords = text.split(" ");
+    return splitWords.map(word => word.split(""));
+  }, [text]);
 
   return (
     <p ref={containerRef} className={cn("flex flex-wrap justify-center", className)}>
-      {words.map((word, i) => (
+      {wordsData.map((chars, i) => (
         <span key={i} className="mr-[0.25em] mb-[0.1em] relative inline-block">
-          {word.split("").map((char, j) => {
-            const start = (i * 10 + j) / (words.length * 10);
-            const end = start + (1 / (words.length * 10));
+          {chars.map((char, j) => {
+            const start = (i * 10 + j) / (wordsData.length * 10);
+            const end = start + (1 / (wordsData.length * 10));
 
             return (
               <Character

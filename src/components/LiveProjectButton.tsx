@@ -1,12 +1,11 @@
 import React from 'react';
 import { cn } from '../utils/cn';
 
-interface LiveProjectButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface LiveProjectButtonProps extends React.ComponentProps<'button'> {
   className?: string;
 }
 
-export const LiveProjectButton = React.forwardRef<HTMLButtonElement, LiveProjectButtonProps>(
-  ({ className, ...props }, ref) => {
+export const LiveProjectButton = ({ className, ref, ...props }: LiveProjectButtonProps) => {
     return (
       <button
         ref={ref}
@@ -23,6 +22,4 @@ export const LiveProjectButton = React.forwardRef<HTMLButtonElement, LiveProject
         Live Project
       </button>
     );
-  }
-);
-LiveProjectButton.displayName = 'LiveProjectButton';
+};

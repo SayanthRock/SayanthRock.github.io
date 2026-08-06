@@ -1,30 +1,57 @@
-
+import { useEffect } from 'react';
+import Lenis from 'lenis';
+import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
 import { HeroSection } from './sections/HeroSection';
-import { MarqueeSection } from './sections/MarqueeSection';
 import { AboutSection } from './sections/AboutSection';
+import { SkillsSection } from './sections/SkillsSection';
 import { ServicesSection } from './sections/ServicesSection';
-import { ProjectsSection } from './sections/ProjectsSection';
-import { Github } from 'lucide-react';
+import { FeaturedProjectsSection } from './sections/FeaturedProjectsSection';
+import { GithubSection } from './sections/GithubSection';
+import { PhotographySection } from './sections/PhotographySection';
+import { TimelineSection } from './sections/TimelineSection';
+import { TestimonialsSection } from './sections/TestimonialsSection';
+import { ContactSection } from './sections/ContactSection';
 
 function App() {
-  return (
-    <div className="main-wrapper font-sans bg-[#0C0C0C] min-h-screen text-white">
-      <HeroSection />
-      <MarqueeSection />
-      <AboutSection />
-      <ServicesSection />
-      <ProjectsSection />
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 2,
+    });
 
-      <footer className="py-8 bg-[#0C0C0C] flex justify-center items-center relative z-20">
-        <a
-          href="https://github.com/sayanthrock"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#D7E2EA] hover:text-white transition-colors duration-200"
-        >
-          <Github size={24} />
-        </a>
-      </footer>
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  return (
+    <div className="main-wrapper">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ServicesSection />
+        <FeaturedProjectsSection />
+        <GithubSection />
+        <PhotographySection />
+        <TimelineSection />
+        <TestimonialsSection />
+        <ContactSection />
+      </main>
+      <Footer />
     </div>
   );
 }

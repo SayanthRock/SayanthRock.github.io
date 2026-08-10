@@ -17,6 +17,7 @@
     @apply bg-[var(--bg-dark)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent)] selection:text-white;
     background-color: var(--bg-dark);
     color: var(--text-primary);
+    font-family: 'Kanit', sans-serif;
   }
 
   *, *::before, *::after {
@@ -60,5 +61,11 @@
 
   .bg-glass {
     @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

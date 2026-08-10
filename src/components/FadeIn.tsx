@@ -1,38 +1,39 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '../utils/cn';
 
-interface FadeInProps {
+interface FadeInProps extends HTMLMotionProps<'div'> {
   children: ReactNode;
   delay?: number;
   duration?: number;
-  className?: string;
-  y?: number;
   x?: number;
-  once?: boolean;
+  y?: number;
+  className?: string;
+  as?: any;
 }
 
 export function FadeIn({
   children,
   delay = 0,
-  duration = 0.5,
-  className,
-  y = 20,
+  duration = 0.7,
   x = 0,
-  once = true,
+  y = 30,
+  className,
+  as = 'div',
+  ...props
 }: FadeInProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '-10% 0px' });
+  const Component = motion.create(as as any);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y, x }}
-      animate={isInView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y, x }}
-      transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+    <Component
+      initial={{ opacity: 0, x, y }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "50px", amount: 0 }}
+      transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={cn(className)}
+      {...props}
     >
       {children}
-    </motion.div>
+    </Component>
   );
 }

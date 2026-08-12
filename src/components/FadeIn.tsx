@@ -9,27 +9,25 @@ interface FadeInProps {
   className?: string;
   y?: number;
   x?: number;
-  once?: boolean;
 }
 
 export function FadeIn({
   children,
   delay = 0,
-  duration = 0.5,
+  duration = 0.7,
   className,
-  y = 20,
+  y = 30,
   x = 0,
-  once = true,
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '-10% 0px' });
+  const isInView = useInView(ref, { once: true, margin: "50px", amount: 0 });
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y, x }}
       animate={isInView ? { opacity: 1, y: 0, x: 0 } : { opacity: 0, y, x }}
-      transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={cn(className)}
     >
       {children}

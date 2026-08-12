@@ -1,17 +1,10 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
 import { HeroSection } from './sections/HeroSection';
+import { MarqueeSection } from './sections/MarqueeSection';
 import { AboutSection } from './sections/AboutSection';
-import { SkillsSection } from './sections/SkillsSection';
 import { ServicesSection } from './sections/ServicesSection';
-import { FeaturedProjectsSection } from './sections/FeaturedProjectsSection';
-import { GithubSection } from './sections/GithubSection';
-import { PhotographySection } from './sections/PhotographySection';
-import { TimelineSection } from './sections/TimelineSection';
-import { TestimonialsSection } from './sections/TestimonialsSection';
-import { ContactSection } from './sections/ContactSection';
+import { ProjectsSection } from './sections/ProjectsSection';
 
 function App() {
   useEffect(() => {
@@ -37,21 +30,14 @@ function App() {
   }, []);
 
   return (
-    <div className="main-wrapper">
-      <Navbar />
+    <div className="main-wrapper bg-[#0C0C0C]">
       <main>
         <HeroSection />
+        <MarqueeSection />
         <AboutSection />
-        <SkillsSection />
         <ServicesSection />
-        <FeaturedProjectsSection />
-        <GithubSection />
-        <PhotographySection />
-        <TimelineSection />
-        <TestimonialsSection />
-        <ContactSection />
+        <ProjectsSection />
       </main>
-      <Footer />
     </div>
   );
 }

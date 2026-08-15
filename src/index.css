@@ -14,7 +14,7 @@
   body,
   #root,
   .main-wrapper {
-    @apply bg-[var(--bg-dark)] text-[var(--text-primary)] font-sans antialiased selection:bg-[var(--accent)] selection:text-white;
+    @apply font-sans antialiased selection:bg-[var(--accent)] selection:text-white;
     background-color: var(--bg-dark);
     color: var(--text-primary);
   }
@@ -52,6 +52,12 @@
 }
 
 @layer utilities {
+  .hero-heading {
+    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .text-gradient {
     background: linear-gradient(135deg, #FFFFFF 0%, #D7E2EA 100%);
     -webkit-background-clip: text;

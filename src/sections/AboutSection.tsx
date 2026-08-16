@@ -1,47 +1,46 @@
+import { AnimatedText } from '../components/AnimatedText';
+import { ContactButton } from '../components/ContactButton';
 import { FadeIn } from '../components/FadeIn';
-import { SectionTitle } from '../components/SectionTitle';
 
-const stats = [
-  { value: "30+", label: "Projects" },
-  { value: "5+", label: "Technologies" },
-  { value: "Open", label: "Source" },
-  { value: "Pro", label: "Freelancer" },
-];
-
-export function AboutSection() {
+export const AboutSection = () => {
   return (
-    <section id="about" className="py-32 relative z-10 bg-dark">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <SectionTitle title="About Me" />
+    <section id="about" className="min-h-screen flex items-center justify-center relative overflow-hidden px-5 sm:px-8 md:px-10 py-20 bg-[#0C0C0C]">
+      {/* Decorative Images */}
+      <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] z-0">
+        <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" alt="Moon icon" className="w-[120px] sm:w-[160px] md:w-[210px] h-auto" />
+      </FadeIn>
+      <FadeIn delay={0.25} x={-80} y={0} duration={0.9} className="absolute bottom-[8%] left-[3%] sm:left-[6%] md:left-[10%] z-0">
+        <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png" alt="3D object" className="w-[100px] sm:w-[140px] md:w-[180px] h-auto" />
+      </FadeIn>
+      <FadeIn delay={0.15} x={80} y={0} duration={0.9} className="absolute top-[4%] right-[1%] sm:right-[2%] md:right-[4%] z-0">
+        <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png" alt="Lego icon" className="w-[120px] sm:w-[160px] md:w-[210px] h-auto" />
+      </FadeIn>
+      <FadeIn delay={0.3} x={80} y={0} duration={0.9} className="absolute bottom-[8%] right-[3%] sm:right-[6%] md:right-[10%] z-0">
+        <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png" alt="3D group" className="w-[130px] sm:w-[170px] md:w-[220px] h-auto" />
+      </FadeIn>
 
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
-          <div className="w-full lg:w-1/2 flex flex-col gap-8">
-            <FadeIn delay={0.2}>
-              <p className="text-[clamp(1.1rem,2vw,1.5rem)] text-text-secondary leading-relaxed font-light">
-                I am Sayanth Rock, a freelance developer and designer passionate about creating elegant digital experiences. I specialize in Android development, modern web applications, AI integration, UI/UX design, automation, and open-source software.
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.4}>
-              <p className="text-[clamp(1.1rem,2vw,1.5rem)] text-text-secondary leading-relaxed font-light">
-                My goal is to build products that are fast, beautiful, and enjoyable to use. I believe that great design is not just about how it looks, but how it works.
-              </p>
-            </FadeIn>
+      <div className="flex flex-col items-center justify-center z-10 w-full relative">
+        <FadeIn delay={0} y={40}>
+          <h2
+            className="hero-heading font-black uppercase leading-none tracking-tight text-center"
+            style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
+          >
+            About me
+          </h2>
+        </FadeIn>
+
+        <div className="flex flex-col items-center gap-16 sm:gap-20 md:gap-24 mt-10 sm:mt-14 md:mt-16 max-w-[560px]">
+          <div style={{ fontSize: 'clamp(1rem, 2vw, 1.35rem)' }} className="text-[#D7E2EA] font-medium text-center leading-relaxed">
+            <AnimatedText
+              text="With more than five years of experience in design, i focus on branding, web design, and user experience, i truly enjoy working with businesses that aim to stand out and present their best image. Let's build something incredible together!"
+            />
           </div>
 
-          <div className="w-full lg:w-1/2 grid grid-cols-2 gap-4 sm:gap-6">
-            {stats.map((stat, i) => (
-              <FadeIn key={i} delay={0.2 + (i * 0.1)} className="bg-glass rounded-3xl p-8 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors duration-300">
-                <span className="text-[clamp(2.5rem,5vw,3.5rem)] font-black text-white leading-none mb-2">
-                  {stat.value}
-                </span>
-                <span className="text-text-secondary uppercase tracking-widest text-sm font-medium">
-                  {stat.label}
-                </span>
-              </FadeIn>
-            ))}
-          </div>
+          <FadeIn delay={0.2} y={30}>
+            <ContactButton />
+          </FadeIn>
         </div>
       </div>
     </section>
   );
-}
+};

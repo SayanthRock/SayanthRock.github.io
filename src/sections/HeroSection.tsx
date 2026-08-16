@@ -1,114 +1,62 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
-import { AnimatedButton } from '../components/AnimatedButton';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ContactButton } from '../components/ContactButton';
+import { FadeIn } from '../components/FadeIn';
+import { Magnet } from '../components/Magnet';
 
-
-export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
+export const HeroSection = () => {
   return (
-    <section
-      id="home"
-      ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
-    >
-      {/* Background Elements */}
-      <div className="absolute inset-0 z-0 bg-dark">
-        {/* Animated Spotlight */}
-        <motion.div
-          className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
-          animate={{
-            x: mousePosition.x - 300,
-            y: mousePosition.y - 300,
-          }}
-          transition={{ type: "tween", ease: "backOut", duration: 0.5 }}
-          style={{
-            background: 'radial-gradient(circle, #E60023 0%, rgba(230,0,35,0) 70%)',
-          }}
-        />
+    <section className="h-screen flex flex-col overflow-x-clip relative">
+      <FadeIn delay={0} y={-20}>
+        <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 w-full">
+          {["About", "Price", "Projects", "Contact"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem] hover:opacity-70 transition-opacity duration-200"
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
+      </FadeIn>
 
-        {/* Noise Texture */}
-        <div
-          className="absolute inset-0 opacity-[0.03] mix-blend-overlay"
-          style={{ backgroundImage: `url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')` }}
-        />
+      <div className="flex-1 flex flex-col justify-between px-6 md:px-10 relative z-20">
+        <div className="overflow-hidden w-full flex justify-center">
+          <FadeIn delay={0.15} y={40} className="w-full text-center">
+            <h1 className="hero-heading font-black uppercase tracking-tight leading-none whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw] mt-6 sm:mt-4 md:-mt-5">
+              Hi, i&apos;m jack
+            </h1>
+          </FadeIn>
+        </div>
+
+        <div className="flex justify-between items-end pb-7 sm:pb-8 md:pb-10 w-full z-20 pointer-events-none">
+          <FadeIn delay={0.35} y={20}>
+            <p
+              className="text-[#D7E2EA] font-light uppercase tracking-wide leading-snug max-w-[160px] sm:max-w-[220px] md:max-w-[260px] pointer-events-auto"
+              style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}
+            >
+              a 3d creator driven by crafting striking and unforgettable projects
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.5} y={20} className="pointer-events-auto">
+            <ContactButton />
+          </FadeIn>
+        </div>
       </div>
 
-      <motion.div
-        style={{ y, opacity }}
-        className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center"
+      <FadeIn
+        delay={0.6}
+        y={30}
+        className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0 pointer-events-auto"
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-8"
-        >
-          <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-sm font-medium tracking-widest uppercase text-text-secondary">
-            Welcome to my portfolio
-          </span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="font-black leading-[0.9] tracking-tighter uppercase mb-6 flex flex-col"
-        >
-          <span className="text-[clamp(3rem,8vw,6rem)] text-white/90">HI, I'M</span>
-          <span className="text-[clamp(4rem,12vw,10rem)] text-gradient pb-2">SAYANTH ROCK</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl text-[clamp(1rem,2vw,1.25rem)] text-text-secondary font-light mb-12"
-        >
-          Creative Developer • Android Engineer • UI/UX Designer • Open Source Creator
-          <br className="hidden md:block" />
-          I build premium Android apps, modern websites, AI-powered experiences, and beautiful user interfaces focused on speed, simplicity, and design.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-6"
-        >
-          <AnimatedButton href="#projects" variant="primary">
-            Explore Projects
-            <ArrowRight size={20} />
-          </AnimatedButton>
-
-          <AnimatedButton href="#contact" variant="outline">
-            Contact Me
-            <Mail size={20} />
-          </AnimatedButton>
-        </motion.div>
-      </motion.div>
+        <Magnet padding={150} strength={3} activeTransition="transform 0.3s ease-out" inactiveTransition="transform 0.6s ease-in-out">
+          <img
+            src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
+            alt="Jack Portrait"
+            className="w-full h-auto object-contain"
+          />
+        </Magnet>
+      </FadeIn>
     </section>
   );
-}
+};
